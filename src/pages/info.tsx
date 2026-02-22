@@ -15,7 +15,10 @@ type InfoPageProps = {
 };
 
 const InfoPage: FunctionComponent<InfoPageProps> = function({data}:InfoPageProps) {
-  return <Text text={`Hello ${data.site.siteMetadata.title}`} />;
+    return <>
+<a href='/info/'>dddd</a>
+<Text text={`Hello ${data.site.siteMetadata.title}`} />
+  </>
 };      
 
 export default InfoPage;

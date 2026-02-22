@@ -13,6 +13,8 @@ module.exports = {
       },
     },
     `gatsby-plugin-react-helmet`,
+      `gatsby-plugin-emotion`,
+
     // {
     //   resolve: `gatsby-source-filesystem`,
     //   options: {
