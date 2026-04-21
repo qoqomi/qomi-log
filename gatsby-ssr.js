@@ -1,12 +1,16 @@
-/**
- * Implement Gatsby's SSR (Server Side Rendering) APIs in this file.
- *
- * See: https://www.gatsbyjs.com/docs/reference/config-files/gatsby-ssr/
- */
+const { ThemeProvider } = require('@emotion/react');
+const React = require('react');
 
-/**
- * @type {import('gatsby').GatsbySSR['onRenderBody']}
- */
+const Layout = require('./src/components/Layout/Layout');
+const { theme } = require('./src/styles/theme');
+
+exports.wrapRootElement = ({ element }) => (
+  React.createElement(ThemeProvider, { theme }, element)
+);
+
+exports.wrapPageElement = ({ element }) =>
+  React.createElement(Layout.default, null, element);
+
 exports.onRenderBody = ({ setHtmlAttributes }) => {
-  setHtmlAttributes({ lang: `en` })
-}
+  setHtmlAttributes({ lang: 'en' });
+};

@@ -37,7 +37,7 @@ node_modules/
 jspm_packages/
 
 # Typescript v1 declaration files
-typings/
+/typings/
 
 # Optional npm cache directory
 .npm
@@ -54,12 +54,18 @@ typings/
 # dotenv environment variable files
 .env*
 
-# gatsby files
-.cache/
-public
+# Next.js
+.next/
+out/
 
 # Mac files
 .DS_Store
+
+# Content (마크다운 포스트)
+content/
+
+# Claude Code
+.claude/settings.local.json
 
 # Yarn
 yarn-error.log

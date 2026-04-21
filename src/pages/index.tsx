@@ -1,24 +1,52 @@
-import React, { FunctionComponent } from 'react'
-import styled from '@emotion/styled'
-import GlobalStyle from 'components/Common/GlobalStyle'
-import Introduction from 'components/Main/Introduction'
-import Footer from 'components/Common/Footer'
+import React from 'react';
+import { graphql } from 'gatsby';
 
-const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-`
+import { IndexProps } from '@/typings/typings';
+import SEO from '@/components/Layout/SEO';
+import Profile from '@/components/Profile/Profile';
+import PostItemList from '@/components/PostList/PostItemList';
 
-const IndexPage: FunctionComponent = function () {
+function IndexPage({
+  data: {
+    posts: { edges },
+  },
+}: IndexProps) {
+
   return (
-    <Container>
-      <GlobalStyle />
-      <Introduction />
-      <Footer />
-
-    </Container>
-  )
+    <>
+      <SEO />
+      <Profile padding="6rem 0" />
+      <PostItemList posts={edges} />
+    </>
+  );
 }
 
-export default IndexPage
+export const indexQuery = graphql`
+  {
+    posts: allMarkdownRemark(
+      sort: { frontmatter: { date: DESC } }
+    ) {
+      edges {
+        node {
+          id
+          fields {
+            slug
+          }
+          timeToRead
+          frontmatter {
+            title
+            summary
+            date(formatString: "YYYY-MM-DD")
+            thumbnail {
+              childImageSharp {
+                gatsbyImageData(width: 820)
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+`;
+
+export default IndexPage;
