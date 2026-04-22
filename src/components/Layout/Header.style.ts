@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import Link from 'next/link';
 
-import { headerMQ, minimumMQ } from '@/styles/theme';
+import { customMQ, minimumMQ } from '@/styles/theme';
 
 export const HeaderWrap = styled('header', {
   shouldForwardProp: prop => prop !== 'isHidden',
@@ -23,12 +23,12 @@ export const Nav = styled.nav`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 120rem;
+  width: 100%;
   height: 6rem;
+  padding: 0 2rem;
 
-  ${headerMQ} {
-    width: 100%;
-    padding: 0 2rem 0 1.5rem;
+  ${customMQ} {
+    padding: 0 1.4rem;
   }
 `;
 

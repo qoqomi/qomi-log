@@ -11,11 +11,11 @@ thumbnail: './thumbnail.jpeg'
 카드 스와이프 앱을 만들다 보면 카드가 전환될 때 이미지가 잠깐 비었다가 뜨는 현상을 겪는다.
 이걸 flicker라고 하는데, 원인을 이해하려면 RN의 렌더 파이프라인부터 알아야 한다.
 
-<br/>
+
 
 ## 렌더 파이프라인이란?
 
-> React 로직을 호스트 플랫폼(Android/iOS)에 렌더링하기 위한 일련의 작업
+> React 로직을 호스트 플랫폼(Android/iOS)에 렌더링하기 위한 일련의 작업?
 
 렌더 파이프라인은 세 단계로 나뉜다.
 
@@ -58,7 +58,7 @@ Shadow Node들이 부모-자식 관계로 연결된 트리 전체다.
 </View>
 ```
 
-```
+```bash
 ViewShadowNode          ← 루트
   ├── TextShadowNode    ← 자식 1
   └── ImageShadowNode  ← 자식 2
@@ -69,7 +69,7 @@ ViewShadowNode          ← 루트
 
 Shadow Tree가 완성되면 **Yoga**(C++ 레이아웃 엔진)가 각 노드를 순회하며 위치/크기를 계산한다.
 
-```
+```bash
 ViewShadowNode  →  x: 0,  y: 0,  width: 390, height: 200
 TextShadowNode  →  x: 10, y: 10, width: 100, height: 20
 ImageShadowNode →  x: 10, y: 40, width: 100, height: 100
@@ -84,7 +84,7 @@ ImageShadowNode →  x: 10, y: 40, width: 100, height: 100
 
 완성된 Shadow Tree를 실제 네이티브 뷰로 변환해 화면에 붙인다.
 
-```
+```bash
 ViewShadowNode   →   android.view.ViewGroup  (iOS: UIView)
 TextShadowNode   →   android.widget.TextView (iOS: UILabel)
 ImageShadowNode  →   (이미지 컴포넌트 화면에 붙음)
@@ -94,7 +94,7 @@ ImageShadowNode  →   (이미지 컴포넌트 화면에 붙음)
 
 `<Image source={{ uri: '...' }} />`가 Mount되는 순간, RN은 그때서야 이미지 파일을 요청한다.
 
-```
+```bash
 Mount 완료
   → ImageShadowNode 화면에 붙음
   → uri 확인 → 기기 캐시 조회
@@ -107,7 +107,7 @@ Mount 완료
 
 헷갈릴 수 있는 부분인데, `<Image />`가 하는 요청은 이미지 파일(jpg/png) 자체를 받아오는 HTTP 요청이다.
 
-```
+```bash
 API 요청    →  https://api.myapp.com/cards      →  JSON 텍스트 반환
 이미지 요청  →  https://cdn.myapp.com/photo.jpg  →  jpg 바이너리 반환
 ```
@@ -119,8 +119,8 @@ RN 공식 문서의 콜백 순서가 이를 증명한다.
 ```jsx
 <Image
   source={{ uri: 'https://cdn.../photo.jpg' }}
-  onLoadStart={() => console.log('jpg 다운로드 시작')}  // Mount 시점에 호출
-  onProgress={...}                                      // 다운로드 중
+  onLoadStart={() => console.log("jpg 다운로드 시작")}  // Mount 시점에 호출
+  onProgress={...}  // 다운로드 중
   onLoad={() => console.log('jpg 다운로드 완료')}
 />
 ```
@@ -165,8 +165,8 @@ const result = await Image.queryCache(['https://cdn.../photo.jpg']);
 API 응답에 이미지 URL이 포함되어 있어도 flicker는 그대로 발생한다.
 API가 주는 건 **주소(문자열)** 이지 **이미지 파일 자체**가 아니기 때문이다.
 
-```
-API 응답
+```js
+// API 응답
 {
   cards: [
     { id: 1, imageUrl: 'https://cdn.../photo1.jpg' },  // 문자열만 있음
@@ -233,7 +233,7 @@ flicker를 없애려면 `Image.prefetch`를 별도로 사용해야 한다.
 flicker의 근본 원인은 **렌더 파이프라인의 Mount 시점과 이미지 다운로드 시점이 같기 때문**이다.
 `Image.prefetch`는 이 두 시점을 분리해서, Mount될 때는 이미 캐시에 있는 상태를 만든다.
 
-```
+```bash
 프리로딩 없음: Mount → 요청 시작 → 다운로드 → 렌더  (flicker 발생)
 프리로딩 있음: 미리 다운로드 → 캐시 저장 → Mount → 즉시 렌더  (flicker 없음)
 ```

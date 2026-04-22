@@ -10,6 +10,8 @@ import { ArchiveItem, QueueType } from '@/typings/typings';
 const PageWrap = styled.div`
   padding: 2rem 0 6rem;
   max-width: 76.8rem;
+  margin: 0 auto;
+  width: 100%;
 `;
 
 const TopRow = styled.div`

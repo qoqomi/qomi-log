@@ -1,5 +1,5 @@
 import React from 'react';
-import { FiMoon, FiSun, FiTag, FiCpu } from 'react-icons/fi';
+import { FiMoon, FiSun, FiCpu } from 'react-icons/fi';
 
 import {
   HeaderWrap,
@@ -21,9 +21,6 @@ function Header() {
       <Nav>
         <LogoText href="/">My Blog</LogoText>
         <NavItem>
-          <NavIconLink href="/category" title="태그">
-            <FiTag />
-          </NavIconLink>
           <NavIconLink href="/archive" title="AI 보관소">
             <FiCpu />
           </NavIconLink>

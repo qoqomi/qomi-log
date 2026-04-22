@@ -4,6 +4,9 @@ import { customMQ } from 'styles/theme';
 
 export const PostWrap = styled.article`
   padding: 4rem 0 8rem;
+  max-width: 76.8rem;
+  margin: 0 auto;
+  width: 100%;
 `;
 
 export const PostHeader = styled.div`

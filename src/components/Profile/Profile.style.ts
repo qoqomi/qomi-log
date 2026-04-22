@@ -6,6 +6,7 @@ export const ProfileWrap = styled.div<{ padding: string }>`
   display: flex;
   flex-direction: row;
   align-items: center;
+  justify-content: center;
   gap: 3rem;
   padding: ${props => props.padding};
 

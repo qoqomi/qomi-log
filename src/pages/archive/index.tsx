@@ -3,12 +3,14 @@ import React, { useEffect, useState } from 'react';
 
 import SEO from '@/components/Layout/SEO';
 import ArchiveItemComp from '@/components/ArchiveItem';
-import QueueBadge from '@/components/QueueBadge';
 import { supabase } from '@/lib/supabase';
 import { ArchiveItem, ContentType, QueueType } from '@/typings/typings';
 
 const PageWrap = styled.div`
   padding: 2rem 0 6rem;
+  max-width: 76.8rem;
+  margin: 0 auto;
+  width: 100%;
 `;
 
 const Title = styled.h1`
@@ -17,31 +19,55 @@ const Title = styled.h1`
   margin: 0 0 3rem;
 `;
 
-const FilterRow = styled.div`
+const FilterBar = styled.div`
   display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
+  align-items: center;
+  justify-content: space-between;
   margin: 0 0 3rem;
+  border-bottom: 0.1rem solid ${props => props.theme.colors.darkgray_100};
 `;
 
-const FilterButton = styled.button<{ active: boolean }>`
-  padding: 0.6rem 1.4rem;
+const TabGroup = styled.div`
+  display: flex;
+  gap: 0;
+`;
+
+const Tab = styled.button<{ active: boolean }>`
+  padding: 1rem 1.6rem;
+  font-size: 1.4rem;
+  font-weight: ${props => (props.active ? 600 : 400)};
+  color: ${props =>
+    props.active ? props.theme.colors.text_1000 : props.theme.colors.darkgray_800};
+  border-bottom: 0.2rem solid
+    ${props => (props.active ? props.theme.colors.text_1000 : 'transparent')};
+  margin-bottom: -0.1rem;
+  cursor: pointer;
+  transition: all 0.15s ease-in-out;
+
+  &:hover {
+    color: ${props => props.theme.colors.text_1000};
+  }
+`;
+
+const ChipGroup = styled.div`
+  display: flex;
+  gap: 0.6rem;
+`;
+
+const Chip = styled.button<{ active: boolean }>`
+  padding: 0.4rem 1rem;
   border-radius: 2rem;
-  font-size: 1.3rem;
+  font-size: 1.2rem;
   font-weight: 500;
   cursor: pointer;
-  border: 0.15rem solid
+  border: 0.1rem solid
     ${props =>
-      props.active
-        ? props.theme.colors.primary_1000
-        : props.theme.colors.darkgray_300};
+      props.active ? props.theme.colors.text_1000 : props.theme.colors.darkgray_300};
   background-color: ${props =>
-    props.active ? props.theme.colors.lightprimary_500 : 'transparent'};
+    props.active ? props.theme.colors.text_1000 : 'transparent'};
   color: ${props =>
-    props.active
-      ? props.theme.colors.primary_1000
-      : props.theme.colors.text_1000};
-  transition: all 0.2s ease-in-out;
+    props.active ? props.theme.colors.background : props.theme.colors.darkgray_800};
+  transition: all 0.15s ease-in-out;
 `;
 
 const ItemGrid = styled.div`
@@ -91,21 +117,22 @@ export default function ArchivePage() {
       <PageWrap>
         <Title>Archive</Title>
 
-        <FilterRow>
-          {QUEUES.map(q => (
-            <FilterButton key={q} active={queue === q} onClick={() => setQueue(q)}>
-              {q === 'all' ? '전체' : <QueueBadge queue={q as QueueType} />}
-            </FilterButton>
-          ))}
-        </FilterRow>
-
-        <FilterRow>
-          {TYPES.map(t => (
-            <FilterButton key={t} active={type === t} onClick={() => setType(t)}>
-              {t === 'all' ? '전체' : t}
-            </FilterButton>
-          ))}
-        </FilterRow>
+        <FilterBar>
+          <TabGroup>
+            {QUEUES.map(q => (
+              <Tab key={q} active={queue === q} onClick={() => setQueue(q)}>
+                {q === 'all' ? '전체' : q}
+              </Tab>
+            ))}
+          </TabGroup>
+          <ChipGroup>
+            {TYPES.filter(t => t !== 'all').map(t => (
+              <Chip key={t} active={type === t} onClick={() => setType(type === t ? 'all' : t)}>
+                {t}
+              </Chip>
+            ))}
+          </ChipGroup>
+        </FilterBar>
 
         {loading ? (
           <EmptyMessage>불러오는 중...</EmptyMessage>
