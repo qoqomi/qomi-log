@@ -1,5 +1,5 @@
-import { pollMessages } from '../.claude/skills/telegram-poller/scripts/poll_messages';
-import { sendResponse } from '../.claude/skills/telegram-poller/scripts/send_response';
+import { pollMessages } from '../.claude/skills/slack-poller/scripts/poll_messages';
+import { sendResponse } from '../.claude/skills/slack-poller/scripts/send_response';
 import {
   isValidUrl,
   detectContentType,
@@ -76,50 +76,42 @@ ${content.slice(0, 3000)}
 async function main() {
   console.log('[agent] 시작');
 
-  const offset = await getOffset();
-  console.log(`[agent] 현재 offset: ${offset}`);
+  const lastTs = await getOffset();
+  console.log(`[agent] 마지막 처리 ts: ${lastTs}`);
 
-  const updates = await pollMessages(offset);
+  const messages = await pollMessages(lastTs);
 
-  if (updates.length === 0) {
+  if (messages.length === 0) {
     console.log('[agent] 새 메시지 없음. 종료.');
     return;
   }
 
-  console.log(`[agent] ${updates.length}개 메시지 처리 시작`);
+  console.log(`[agent] ${messages.length}개 메시지 처리 시작`);
 
-  let lastUpdateId = offset;
+  let newLastTs = lastTs;
 
-  for (const update of updates) {
-    const message = update.message;
-    lastUpdateId = update.update_id + 1;
-
-    if (!message?.text) continue;
-
-    const chatId = message.chat.id;
+  for (const message of messages) {
     const url = message.text.trim();
+    newLastTs = message.ts;
 
     console.log(`[agent] 처리 중: ${url}`);
 
     // ① URL 유효성
     if (!isValidUrl(url)) {
-      await sendResponse(chatId, '❌ 유효하지 않은 URL입니다.');
+      await sendResponse(`❌ 유효하지 않은 URL입니다: ${url}`);
       continue;
     }
 
     const accessible = await isAccessible(url);
     if (!accessible) {
-      await sendResponse(chatId, '❌ 접근할 수 없는 URL입니다.');
+      await sendResponse(`❌ 접근할 수 없는 URL입니다: ${url}`);
       continue;
     }
 
     // ③ 중복 확인
     const { isDuplicate, existingTitle } = await checkDuplicate(url);
     if (isDuplicate) {
-      await sendResponse(
-        chatId,
-        `⚠️ 이미 저장된 링크입니다.\n📌 ${existingTitle}`,
-      );
+      await sendResponse(`⚠️ 이미 저장된 링크입니다.\n📌 ${existingTitle}`);
       continue;
     }
 
@@ -131,9 +123,7 @@ async function main() {
 
     if (type === 'youtube') {
       const yt = await fetchYouTube(url);
-      if (yt) {
-        rawContent = `제목: ${yt.title}\n채널: ${yt.channelName}\n\n${yt.transcript}`;
-      }
+      if (yt) rawContent = `제목: ${yt.title}\n채널: ${yt.channelName}\n\n${yt.transcript}`;
     } else {
       const article = await fetchArticle(url);
       if (article) {
@@ -149,14 +139,14 @@ async function main() {
     }
 
     if (!rawContent) {
-      await sendResponse(chatId, '❌ 콘텐츠를 가져올 수 없습니다.');
+      await sendResponse('❌ 콘텐츠를 가져올 수 없습니다.');
       continue;
     }
 
     // ⑥ AI 처리
     const aiResult = await processWithAI(rawContent);
     if (!aiResult) {
-      await sendResponse(chatId, '❌ AI 처리에 실패했습니다. 잠시 후 다시 시도해주세요.');
+      await sendResponse('❌ AI 처리에 실패했습니다. 잠시 후 다시 시도해주세요.');
       continue;
     }
 
@@ -172,22 +162,21 @@ async function main() {
       });
     } catch (e) {
       console.error('[agent] DB 저장 실패:', e);
-      await sendResponse(chatId, '❌ 저장에 실패했습니다. 잠시 후 다시 시도해주세요.');
+      await sendResponse('❌ 저장에 실패했습니다. 잠시 후 다시 시도해주세요.');
       continue;
     }
 
     // ⑨ 완료 응답
     const siteUrl = process.env.SITE_URL ?? 'https://example.com';
     await sendResponse(
-      chatId,
-      `✅ 저장 완료!\n\n📌 <b>${aiResult.title}</b>\n🏷️ ${aiResult.tags.map(t => `#${t}`).join(' ')}\n\n🔗 <a href="${siteUrl}/archive">아카이브 보기</a>`,
+      `✅ 저장 완료!\n\n📌 *${aiResult.title}*\n🏷️ ${aiResult.tags.map(t => `#${t}`).join(' ')}\n\n🔗 ${siteUrl}/archive`,
     );
 
     console.log(`[agent] 완료: ${aiResult.title}`);
   }
 
-  await setOffset(lastUpdateId);
-  console.log(`[agent] offset 업데이트: ${lastUpdateId}`);
+  await setOffset(newLastTs);
+  console.log(`[agent] ts 업데이트: ${newLastTs}`);
 }
 
 main().catch(e => {

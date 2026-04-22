@@ -5,7 +5,7 @@ import { customMQ } from '@/styles/theme';
 export const ImgWrap = styled.div`
   position: relative;
   width: 22rem;
-  height: 14rem;
+  aspect-ratio: 16 / 10;
   border-radius: 1rem;
   overflow: hidden;
   z-index: 0;
@@ -14,7 +14,7 @@ export const ImgWrap = styled.div`
 
   ${customMQ} {
     width: 100%;
-    height: 18rem;
+    aspect-ratio: 16 / 9;
     margin: 0 0 1.7rem;
   }
 `;

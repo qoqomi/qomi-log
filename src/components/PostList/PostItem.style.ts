@@ -28,7 +28,7 @@ export const PostItemWrap = styled(Link)`
 
   ${customMQ} {
     flex-direction: column;
-    align-items: flex-start;
+    align-items: stretch;
   }
 `;
 
@@ -37,6 +37,10 @@ export const PostCard = styled.div`
   display: flex;
   flex-direction: column;
   padding: 0 1.7rem 0 0;
+
+  ${customMQ} {
+    padding: 0;
+  }
 `;
 
 export const CardTitle = styled.h1`

@@ -1,5 +1,5 @@
-import React from 'react';
-import { FiMoon, FiSun, FiCpu } from 'react-icons/fi';
+import React, { useEffect, useState } from 'react';
+import { FiMoon, FiSun, FiCpu, FiBookOpen } from 'react-icons/fi';
 
 import {
   HeaderWrap,
@@ -15,12 +15,18 @@ import { useDarkMode } from '@/contexts/DarkModeContext';
 function Header() {
   const isHidden = useScrollDirection();
   const { isDark, toggle } = useDarkMode();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => setMounted(true), []);
 
   return (
     <HeaderWrap isHidden={isHidden}>
       <Nav>
         <LogoText href="/">My Blog</LogoText>
         <NavItem>
+          <NavIconLink href="/blog" title="블로그">
+            <FiBookOpen />
+          </NavIconLink>
           <NavIconLink href="/archive" title="AI 보관소">
             <FiCpu />
           </NavIconLink>
@@ -28,7 +34,7 @@ function Header() {
             title={isDark ? '라이트모드' : '다크모드'}
             onClick={toggle}
           >
-            {isDark ? <FiSun /> : <FiMoon />}
+            {mounted ? (isDark ? <FiSun /> : <FiMoon />) : <FiMoon />}
           </NavIconButton>
         </NavItem>
       </Nav>

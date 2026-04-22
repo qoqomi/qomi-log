@@ -7,22 +7,22 @@ function getClient() {
   );
 }
 
-export async function getOffset(): Promise<number> {
+export async function getOffset(): Promise<string> {
   const { data } = await getClient()
     .from('agent_state')
     .select('value')
-    .eq('key', 'telegram_offset')
+    .eq('key', 'slack_last_ts')
     .single();
-  return data ? parseInt(data.value as string, 10) : 0;
+  return data ? (data.value as string) : '0';
 }
 
-export async function setOffset(offset: number): Promise<void> {
+export async function setOffset(ts: string): Promise<void> {
   await getClient()
     .from('agent_state')
     .upsert(
       {
-        key: 'telegram_offset',
-        value: String(offset),
+        key: 'slack_last_ts',
+        value: ts,
         updated_at: new Date().toISOString(),
       },
       { onConflict: 'key' },
