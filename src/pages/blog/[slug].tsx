@@ -3,6 +3,8 @@ import { GetStaticPaths, GetStaticProps } from 'next';
 import { MDXRemote, MDXRemoteSerializeResult } from 'next-mdx-remote';
 import { serialize } from 'next-mdx-remote/serialize';
 import Image from 'next/image';
+import rehypeHighlight from 'rehype-highlight';
+import remarkGfm from 'remark-gfm';
 
 import SEO from '@/components/Layout/SEO';
 import { getAllSlugs, getPostBySlug } from '@/lib/posts';
@@ -16,7 +18,7 @@ import {
   PostMeta,
   PostTitle,
   PostWrap,
-} from '@/templates/post_template.style';
+} from '@/styles/post.style';
 
 interface BlogPostProps {
   frontmatter: PostFrontmatter;
@@ -80,7 +82,12 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   const post = getPostBySlug(params!.slug as string);
   if (!post) return { notFound: true };
 
-  const mdxSource = await serialize(post.content ?? '');
+  const mdxSource = await serialize(post.content ?? '', {
+    mdxOptions: {
+      remarkPlugins: [remarkGfm],
+      rehypePlugins: [rehypeHighlight],
+    },
+  });
   return {
     props: {
       frontmatter: post.frontmatter,

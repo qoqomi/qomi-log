@@ -1,13 +1,23 @@
 import { Global, css, useTheme } from '@emotion/react';
 import emotionReset from 'emotion-reset';
 
+import { useDarkMode } from '@/contexts/DarkModeContext';
 import { AppTheme, customMQ } from './theme';
 
 const GlobalStyle = function () {
   const theme = useTheme() as AppTheme;
+  const { isDark } = useDarkMode();
 
   const style = css`
     @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.6/dist/web/variable/pretendardvariable-dynamic-subset.css');
+
+    @font-face {
+      font-family: 'D2Coding';
+      src: url('https://cdn.jsdelivr.net/gh/naver/d2codingfont@master/D2Coding/D2Coding-Ver1.3.2-20180524.woff') format('woff');
+      font-weight: normal;
+      font-style: normal;
+      font-display: swap;
+    }
 
     ${emotionReset}
 
@@ -105,6 +115,27 @@ const GlobalStyle = function () {
       background-color: rgb(254 190 152 / 80%);
       color: rgb(255 255 255 / 100%);
     }
+
+    /* highlight.js token colors */
+    ${isDark ? `
+      .hljs-keyword, .hljs-selector-tag, .hljs-built_in { color: #ff7b72; }
+      .hljs-string, .hljs-attr { color: #a5d6ff; }
+      .hljs-comment { color: #8b949e; font-style: italic; }
+      .hljs-number, .hljs-literal { color: #79c0ff; }
+      .hljs-title, .hljs-function { color: #d2a8ff; }
+      .hljs-variable, .hljs-params { color: #ffa657; }
+      .hljs-tag { color: #7ee787; }
+      .hljs-attribute { color: #79c0ff; }
+    ` : `
+      .hljs-keyword, .hljs-selector-tag, .hljs-built_in { color: #d73a49; }
+      .hljs-string, .hljs-attr { color: #032f62; }
+      .hljs-comment { color: #6a737d; font-style: italic; }
+      .hljs-number, .hljs-literal { color: #005cc5; }
+      .hljs-title, .hljs-function { color: #6f42c1; }
+      .hljs-variable, .hljs-params { color: #e36209; }
+      .hljs-tag { color: #22863a; }
+      .hljs-attribute { color: #005cc5; }
+    `}
   `;
 
   return <Global styles={style} />;

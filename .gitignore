@@ -58,6 +58,9 @@ jspm_packages/
 .next/
 out/
 
+# Cache
+.cache/
+
 # Build output
 public/page-data/
 public/static/
