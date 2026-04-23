@@ -20,19 +20,6 @@ const ItemWrap = styled(Link)`
   }
 `;
 
-const IconWrap = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 3.2rem;
-  height: 3.2rem;
-  border-radius: 0.6rem;
-  background-color: ${props => props.theme.colors.lightgray_500};
-  color: ${props => props.theme.colors.darkgray_800};
-  flex-shrink: 0;
-  margin-top: 0.2rem;
-  font-size: 1.6rem;
-`;
 
 const Content = styled.div`
   flex: 1;
