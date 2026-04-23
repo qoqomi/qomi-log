@@ -94,6 +94,16 @@ const GlobalStyle = function () {
           -webkit-user-drag: none;
         }
 
+        * {
+          user-select: none;
+          -webkit-user-select: none;
+        }
+
+        p, h1, h2, h3, h4, h5, h6, span, li, td, th, code, pre {
+          user-select: text;
+          -webkit-user-select: text;
+        }
+
         ::selection {
           background-color: rgb(254 190 152 / 80%);
           color: #fff;

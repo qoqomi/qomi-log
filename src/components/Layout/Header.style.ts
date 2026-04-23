@@ -41,6 +41,7 @@ export const LogoText = styled(Link)`
   font-weight: bold;
   color: ${props => props.theme.colors.primary_1000};
   text-decoration: none;
+  cursor: pointer;
 `;
 
 export const NavItem = styled.div`
@@ -61,6 +62,7 @@ export const NavIconLink = styled(Link)`
   height: 3.8rem;
   border-radius: 50%;
   color: ${props => props.theme.colors.text_1000};
+  cursor: pointer;
   transition: all 0.2s ease-in-out;
 
   svg {

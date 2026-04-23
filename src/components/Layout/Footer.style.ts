@@ -46,6 +46,7 @@ export const LogoText = styled(Link)`
   font-weight: bold;
   color: ${props => props.theme.colors.primary_1000};
   text-decoration: none;
+  cursor: pointer;
 `;
 
 export const Copyright = styled.div`
@@ -81,6 +82,7 @@ export const NavTitle = styled.p`
 
 export const NavLinkItem = styled(Link)`
   margin: 2.2rem 0 0;
+  cursor: pointer;
 
   :hover {
     color: ${props => props.theme.colors.primary_1000};

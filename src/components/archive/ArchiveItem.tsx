@@ -13,6 +13,7 @@ const ItemWrap = styled(Link)`
   border-bottom: 0.1rem solid ${props => props.theme.colors.darkgray_100};
   transition: background-color 0.15s ease-in-out;
   border-radius: 0.6rem;
+  cursor: pointer;
 
   &:hover {
     background-color: ${props => props.theme.colors.darkgray_100};

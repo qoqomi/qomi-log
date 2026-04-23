@@ -1,10 +1,9 @@
 'use client';
 
 import styled from '@emotion/styled';
-import React, { useState } from 'react';
+import React from 'react';
 import { BsGithub } from 'react-icons/bs';
 import { SiGmail } from 'react-icons/si';
-import { FiPlus, FiMinus } from 'react-icons/fi';
 
 import ProfileImg from '@/components/Profile/ProfileImg';
 import { customMQ } from '@/styles/theme';
@@ -54,6 +53,7 @@ const SocialLink = styled.a`
   display: flex;
   align-items: center;
   color: ${props => props.theme.colors.text_1000};
+  cursor: pointer;
   transition: color 0.2s ease-in-out;
 
   svg { font-size: 2.2rem; }
