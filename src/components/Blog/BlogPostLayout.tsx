@@ -33,7 +33,7 @@ export default function BlogPostLayout({ frontmatter, children }: Props) {
             maxHeight: '40rem',
             borderRadius: '1.2rem',
             overflow: 'hidden',
-            aspectRatio: '16/7',
+            aspectRatio: '16/9',
           }}
         >
           <Image
