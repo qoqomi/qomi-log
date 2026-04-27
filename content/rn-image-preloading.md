@@ -1,9 +1,9 @@
 ---
 date: '2026-04-17'
 title: 'React Native 이미지 프리로딩, 렌더 파이프라인부터 이해하기'
-category: 'React Native'
+category: '개념정리'
 summary: '카드 스와이프 앱에서 이미지가 뚝뚝 뜨는 flicker 현상의 원인을 RN 렌더 파이프라인 구조로 이해하고, Image.prefetch로 해결하는 방법을 알아보자.'
-thumbnail: './thumbnail.jpeg'
+thumbnail: '/images/posts/3174096.jpeg'
 ---
 
 ## 왜 이미지가 뚝뚝 뜰까?

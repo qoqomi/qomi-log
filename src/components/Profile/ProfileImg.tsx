@@ -26,7 +26,7 @@ export const PlaceholderWrap = styled.div`
 function ProfileImg() {
   return (
     <ImgWrap>
-      <Image src="/images/profile.png" alt="profile" fill style={{ objectFit: 'cover' }} />
+      <Image src="/images/profile.png" alt="profile" fill style={{ objectFit: 'cover' }} priority />
     </ImgWrap>
   );
 }
