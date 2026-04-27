@@ -5,7 +5,7 @@ import React, { useEffect, useState } from 'react';
 import type { Metadata } from 'next';
 
 import ArchiveItemComp from '@/components/archive/ArchiveItem';
-import { supabase } from '@/lib/supabase';
+import { getSupabase } from '@/lib/supabase';
 import { ArchiveItem, ContentType, QueueType } from '@/typings/typings';
 
 const PageWrap = styled.div`
@@ -97,6 +97,7 @@ export default function ArchivePage() {
   useEffect(() => {
     const fetchItems = async () => {
       setLoading(true);
+      const supabase = getSupabase();
       let query = supabase
         .from('archive')
         .select('*')

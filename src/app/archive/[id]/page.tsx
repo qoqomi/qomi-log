@@ -5,7 +5,7 @@ import { useParams } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 
 import QueueBadge from '@/components/archive/QueueBadge';
-import { supabase } from '@/lib/supabase';
+import { getSupabase } from '@/lib/supabase';
 import { ArchiveItem, QueueType } from '@/typings/typings';
 
 const PageWrap = styled.div`
@@ -145,6 +145,7 @@ export default function ArchiveDetailPage() {
 
   useEffect(() => {
     if (!params?.id) return;
+    const supabase = getSupabase();
     supabase
       .from('archive')
       .select('*')
@@ -163,6 +164,7 @@ export default function ArchiveDetailPage() {
   const handleSave = async () => {
     if (!item) return;
     setSaving(true);
+    const supabase = getSupabase();
     await supabase
       .from('archive')
       .update({ memo, queue: queueVal })
