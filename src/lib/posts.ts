@@ -24,9 +24,11 @@ export function getPostBySlug(slug: string): Post | null {
     const readingTime = Math.max(1, Math.ceil(wordCount / 200));
 
     const rawThumbnail = data.thumbnail as string | undefined;
-    const thumbnail = rawThumbnail
-      ? `/images/${path.basename(rawThumbnail)}`
-      : null;
+    const thumbnail = rawThumbnail?.startsWith('/')
+      ? rawThumbnail
+      : rawThumbnail
+        ? `/images/posts/${path.basename(rawThumbnail)}`
+        : null;
 
     const frontmatter: PostFrontmatter = {
       title: String(data.title || ''),
