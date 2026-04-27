@@ -17,8 +17,7 @@ const GlobalStyle = function () {
 
         @font-face {
           font-family: 'D2Coding';
-          src: url('https://cdn.jsdelivr.net/gh/naver/d2codingfont@master/D2Coding/D2Coding-Ver1.3.2-20180524.woff')
-            format('woff');
+          src: url('/fonts/D2Coding.ttf') format('truetype');
           font-weight: normal;
           font-style: normal;
           font-display: swap;
