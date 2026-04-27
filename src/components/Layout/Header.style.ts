@@ -58,16 +58,13 @@ export const NavIconLink = styled(Link)`
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 3.8rem;
-  height: 3.8rem;
-  border-radius: 50%;
-  color: ${props => props.theme.colors.text_1000};
+  padding: 0.6rem 1.2rem;
+  border-radius: 2rem;
+  font-size: 1.4rem;
+  font-weight: 500;
+  color: ${props => props.theme.colors.darkgray_800};
   cursor: pointer;
   transition: all 0.2s ease-in-out;
-
-  svg {
-    font-size: 2rem;
-  }
 
   :hover {
     background-color: ${props => props.theme.colors.lightprimary_500};

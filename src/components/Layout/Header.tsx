@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { FiMoon, FiSun, FiCpu, FiBookOpen } from 'react-icons/fi';
+import { FiMoon, FiSun } from 'react-icons/fi';
 
 import {
   HeaderWrap,
@@ -24,12 +24,8 @@ function Header() {
       <Nav>
         <LogoText href="/">My Blog</LogoText>
         <NavItem>
-          <NavIconLink href="/blog" title="블로그">
-            <FiBookOpen />
-          </NavIconLink>
-          <NavIconLink href="/archive" title="AI 보관소">
-            <FiCpu />
-          </NavIconLink>
+          <NavIconLink href="/blog">Blog</NavIconLink>
+          <NavIconLink href="/archive">Archive</NavIconLink>
           <NavIconButton
             title={isDark ? '라이트모드' : '다크모드'}
             onClick={toggle}
